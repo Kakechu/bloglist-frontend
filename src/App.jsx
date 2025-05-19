@@ -47,6 +47,25 @@ const App = () => {
     }
   }
 
+  const handleLike = async ( blogId, newBlog ) => {
+  
+    const original = blogs.find(b => b.id === blogId)
+
+    try {
+      const returnedBlog = await blogService.update(blogId, newBlog)
+      
+      const blogWithUser = {
+        ...returnedBlog,
+        user: original.user
+      }
+
+      setBlogs(blogs.map(b => b.id !== blogId ? b : blogWithUser))
+    } catch (exception) {
+      console.log("error liking", exception)
+    }
+  
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -126,7 +145,7 @@ const App = () => {
       </Togglable>    
 
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleLike={handleLike}/>
       )}
     </div>
   )
