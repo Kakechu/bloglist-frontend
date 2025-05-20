@@ -18,7 +18,7 @@ const App = () => {
 
 
   useEffect(() => {
-    blogService.getAll().then(blogs => setBlogs( blogs ))  
+    blogService.getAll().then(blogs => setBlogs( blogs ))
   }, [])
 
   useEffect(() => {
@@ -51,12 +51,12 @@ const App = () => {
   }
 
   const handleLike = async ( blogId, newBlog ) => {
-  
+
     const original = blogs.find(b => b.id === blogId)
 
     try {
       const returnedBlog = await blogService.update(blogId, newBlog)
-      
+
       const blogWithUser = {
         ...returnedBlog,
         user: original.user
@@ -64,22 +64,20 @@ const App = () => {
 
       setBlogs(blogs.map(b => b.id !== blogId ? b : blogWithUser))
     } catch (exception) {
-      console.log("error liking", exception)
+      console.log('error liking', exception)
     }
-  
   }
 
   const handleRemove = async (blog) => {
-    //console.log("blogToRemove:", blog)
 
     try {
       await blogService.removeBlog(blog.id)
       setBlogs(blogs.filter(b => b.id !== blog.id))
-      showNotification(`blog ${blog.title} removed`, "success")
+      showNotification(`blog ${blog.title} removed`, 'success')
 
     } catch (exception) {
-      console.log("error in deletion", exception)
-      showNotification(`cannot remove blog ${blog.title} `, "success")
+      console.log('error in deletion', exception)
+      showNotification(`cannot remove blog ${blog.title} `, 'error')
     }
   }
 
@@ -92,7 +90,7 @@ const App = () => {
 
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      )
 
       blogService.setToken(user.token)
       setUser(user)
@@ -100,7 +98,7 @@ const App = () => {
       setPassword('')
     } catch (exception) {
       console.log('wrong credentials')
-      showNotification('wrong username or password', "error")
+      showNotification('wrong username or password', 'error')
     }
   }
 
@@ -118,9 +116,6 @@ const App = () => {
 
   const sortedBlogs = [...blogs].sort(function(a, b){return b.likes - a.likes})
 
-  // täältä pitää toimittaa user 
-
-
   const loginForm = () => (
     <div>
       <h2>Log in to application</h2>
@@ -128,7 +123,7 @@ const App = () => {
       <form onSubmit={handleLogin}>
         <div>
           username
-            <input
+          <input
             type="text"
             value={username}
             name="Username"
@@ -137,7 +132,7 @@ const App = () => {
         </div>
         <div>
           password
-            <input
+          <input
             type="password"
             value={password}
             name="Password"
@@ -163,8 +158,7 @@ const App = () => {
       <p>{user.name} logged in <button onClick={handleLogOut}>logout</button></p>
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
         <BlogForm createBlog={addBlog}/>
-      </Togglable>    
-
+      </Togglable>
       {sortedBlogs.map(blog =>
         <Blog
           key={blog.id}

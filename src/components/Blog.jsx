@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from 'react'
 
 const Blog = ({ blog, handleLike, handleRemove, user }) => {
 
@@ -26,7 +26,6 @@ const Blog = ({ blog, handleLike, handleRemove, user }) => {
     if (confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
       handleRemove(blog)
     }
-    
   }
 
   const blogDetails = () => (
@@ -44,38 +43,38 @@ const Blog = ({ blog, handleLike, handleRemove, user }) => {
           like
         </button>
       </div>
-      <div>{blog.user.name}</div>    
+      <div>{blog.user.name}</div>
     </div>
   )
 
   const removeButton = () => (
     <div>
-      <button 
+      <button
         style={{ backgroundColor: '#24A0ED' }}
         onClick={() => onRemove()}
       >
         remove
-      </button>  
+      </button>
     </div>
 
   )
 
   if (!showBlog) {
     return (
-    <div style={blogStyle}>
-      {blog.title} {blog.author}
-      <button onClick={() => setShowBlog(true)}>
-        view
-      </button>
-    </div>
-    )  
+      <div style={blogStyle}>
+        {blog.title} {blog.author}
+        <button onClick={() => setShowBlog(true)}>
+          view
+        </button>
+      </div>
+    )
   }
 
   if (user.username === blog.user?.username) {  return (
     <div style={blogStyle}>
-    {blogDetails()}
-    {removeButton()}
-    </div> 
+      {blogDetails()}
+      {removeButton()}
+    </div>
   )}
 
   return (
@@ -83,9 +82,6 @@ const Blog = ({ blog, handleLike, handleRemove, user }) => {
       {blogDetails()}
     </div>
   )
-
-  
-
 }
 
 export default Blog
