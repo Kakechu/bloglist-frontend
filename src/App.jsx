@@ -18,9 +18,7 @@ const App = () => {
 
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+    blogService.getAll().then(blogs => setBlogs( blogs ))  
   }, [])
 
   useEffect(() => {
@@ -39,7 +37,12 @@ const App = () => {
     try {
       const returnedBlog = await blogService.create(blogObject)
 
-      setBlogs(blogs.concat(returnedBlog))
+      const returnedBlogWithUser = {
+        ...returnedBlog,
+        user: user
+      }
+
+      setBlogs(blogs.concat(returnedBlogWithUser))
       showNotification(`a new blog ${blogObject.title} by ${blogObject.author} added`, 'success')
 
     } catch (exception) {
@@ -64,6 +67,20 @@ const App = () => {
       console.log("error liking", exception)
     }
   
+  }
+
+  const handleRemove = async (blog) => {
+    //console.log("blogToRemove:", blog)
+
+    try {
+      await blogService.removeBlog(blog.id)
+      setBlogs(blogs.filter(b => b.id !== blog.id))
+      showNotification(`blog ${blog.title} removed`, "success")
+
+    } catch (exception) {
+      console.log("error in deletion", exception)
+      showNotification(`cannot remove blog ${blog.title} `, "success")
+    }
   }
 
   const handleLogin = async (event) => {
@@ -98,6 +115,10 @@ const App = () => {
       setNotificationMessage(null)
     }, 4000)
   }
+
+  const sortedBlogs = [...blogs].sort(function(a, b){return b.likes - a.likes})
+
+  // täältä pitää toimittaa user 
 
 
   const loginForm = () => (
@@ -144,8 +165,14 @@ const App = () => {
         <BlogForm createBlog={addBlog}/>
       </Togglable>    
 
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleLike={handleLike}/>
+      {sortedBlogs.map(blog =>
+        <Blog
+          key={blog.id}
+          blog={blog}
+          handleLike={handleLike}
+          handleRemove={handleRemove}
+          user={user}
+        />
       )}
     </div>
   )

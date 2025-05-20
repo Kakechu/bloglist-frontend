@@ -1,7 +1,6 @@
 import { useState } from "react"
-import blogService from '../services/blogs'
 
-const Blog = ({ blog, handleLike }) => {
+const Blog = ({ blog, handleLike, handleRemove, user }) => {
 
   const [showBlog, setShowBlog] = useState(false)
   const blogStyle = {
@@ -23,19 +22,15 @@ const Blog = ({ blog, handleLike }) => {
 
   }
 
-  if (!showBlog) {
-    return (
-    <div style={blogStyle}>
-      {blog.title} {blog.author}
-      <button onClick={() => setShowBlog(true)}>
-        view
-      </button>
-    </div>
-    )  
+  const onRemove = () => {
+    if (confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      handleRemove(blog)
+    }
+    
   }
 
-  return (
-    <div style={blogStyle}>
+  const blogDetails = () => (
+    <div>
       <div>
         {blog.title} {blog.author}
         <button onClick={() => setShowBlog(false)}>
@@ -49,10 +44,47 @@ const Blog = ({ blog, handleLike }) => {
           like
         </button>
       </div>
-      <div>{blog.user.name}</div>
-      <div>{blog.user.id}</div>
+      <div>{blog.user.name}</div>    
     </div>
   )
+
+  const removeButton = () => (
+    <div>
+      <button 
+        style={{ backgroundColor: '#24A0ED' }}
+        onClick={() => onRemove()}
+      >
+        remove
+      </button>  
+    </div>
+
+  )
+
+  if (!showBlog) {
+    return (
+    <div style={blogStyle}>
+      {blog.title} {blog.author}
+      <button onClick={() => setShowBlog(true)}>
+        view
+      </button>
+    </div>
+    )  
+  }
+
+  if (user.username === blog.user?.username) {  return (
+    <div style={blogStyle}>
+    {blogDetails()}
+    {removeButton()}
+    </div> 
+  )}
+
+  return (
+    <div style={blogStyle}>
+      {blogDetails()}
+    </div>
+  )
+
+  
 
 }
 
