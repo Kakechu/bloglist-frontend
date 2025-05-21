@@ -29,7 +29,7 @@ const Blog = ({ blog, handleLike, handleRemove, user }) => {
   }
 
   const blogDetails = () => (
-    <div>
+    <div className='blogDetails'>
       <div>
         {blog.title} {blog.author}
         <button onClick={() => setShowBlog(false)}>
@@ -61,7 +61,7 @@ const Blog = ({ blog, handleLike, handleRemove, user }) => {
 
   if (!showBlog) {
     return (
-      <div style={blogStyle}>
+      <div style={blogStyle} className='blog'>
         {blog.title} {blog.author}
         <button onClick={() => setShowBlog(true)}>
           view
@@ -71,14 +71,14 @@ const Blog = ({ blog, handleLike, handleRemove, user }) => {
   }
 
   if (user.username === blog.user?.username) {  return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       {blogDetails()}
       {removeButton()}
     </div>
   )}
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       {blogDetails()}
     </div>
   )
