@@ -31,7 +31,7 @@ const Blog = ({ blog, handleLike, handleRemove, user }) => {
   const blogDetails = () => (
     <div className='blogDetails'>
       <div>
-        {blog.title} {blog.author}
+        <span>{blog.title} {blog.author}</span>
         <button onClick={() => setShowBlog(false)}>
           hide
         </button>
