@@ -14,4 +14,23 @@ const createBlog = async (page, title, author, url) => {
   await page.getByText(`${title} ${author}`).waitFor()
 }
 
-export { loginWith, createBlog }
+const clickView = async (page, title, author) => {
+    const blog = await page.locator('.blog', { hasText: `${title} ${author}` })
+    await blog.getByRole('button', { name: 'view' }).click()
+    return blog
+}
+
+const likeBlog = async (page, title, author, likes) => {
+    const blog = await page.locator('.blog', { hasText: `${title} ${author}` })
+    await blog.getByRole('button', { name: 'view' }).click()
+
+    for (let i = 0; i < likes; i++) {
+        await blog.getByRole('button', { name: 'like' }).click()
+        await blog.getByText(`likes ${i+1}`).waitFor()
+    }
+
+    return blog
+}
+
+
+export { loginWith, createBlog, clickView, likeBlog }
